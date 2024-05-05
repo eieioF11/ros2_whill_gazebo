@@ -1,0 +1,62 @@
+<robot name="whill" xmlns:xacro="http://ros.org/wiki/xacro">
+	<xacro:macro name="laser_macro" params="parent prefix xyz rpy topic visualize">
+		<joint name="${prefix}_joint" type="fixed">
+			<parent link="${parent}"/>
+			<child  link="${prefix}"/>
+			<origin xyz="${xyz}" rpy="${rpy}"/>
+		</joint>
+		<link name="${prefix}">
+			<!--LRFの見た目設定-->
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+				<cylinder radius="0.02" length="0.02" />
+				</geometry>
+				<material name="blue" />
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+				<cylinder radius="0.020" length="0.02" />
+				</geometry>
+			</collision>
+		</link>
+		<gazebo reference="${prefix}">
+			<material>Gazebo/Blue</material>
+			<sensor type="ray" name="${prefix}">
+				<pose>0 0 0 0 0 0</pose><!--位置と角度。x,y,z,roll,pitch,yaw 単位はメートルとdegree-->
+				<visualize>${visualize}</visualize><!--光線表示設定-->
+				<update_rate>1000</update_rate><!--[hz]-->
+				<ray>
+				<!--UTM-30LXの仕様 多分-->
+				<scan>
+					<horizontal>
+					<samples>1080</samples>
+					<resolution>1</resolution>
+					<!--角度範囲-->
+					<min_angle>${radians(-135)}</min_angle>
+					<max_angle>${radians(135)}</max_angle>
+					</horizontal>
+				</scan>
+				<range>
+					<min>0.1</min><!--最小距離-->
+					<max>30.0</max><!--最大距離-->
+					<resolution>0.01</resolution>
+				</range>
+				<noise>
+					<type>gaussian</type>
+					<mean>0.0</mean>
+					<stddev>0.01</stddev>
+				</noise>
+				</ray>
+				<plugin name="scan" filename="libgazebo_ros_ray_sensor.so">
+				<ros>
+					<remapping>~/out:=${topic}</remapping>
+				</ros>
+				<output_type>sensor_msgs/LaserScan</output_type>
+				<frame_name>${prefix}</frame_name>
+				</plugin>
+			</sensor>
+		</gazebo>
+	</xacro:macro>
+</robot>
