@@ -124,8 +124,12 @@
 	</gazebo>
 
 	<!--LRFの位置-->
-	<xacro:laser_macro prefix="laser" parent="sensor_arm_link" xyz="0.0 0 0.5" rpy="0 0 0" topic="/scan" visualize="True"/>
-
+	<!-- <xacro:laser_macro prefix="laser" parent="sensor_arm_link" xyz="0.0 0 0.5" rpy="0 0 0" topic="/scan" visualize="True"/> -->
+    <!-- 3D LRF -->
+    <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
+    <xacro:VLP-16 parent="sensor_arm_link" name="velodyne" topic="/velodyne_points" hz="10" samples="440" gpu="false">
+        <origin xyz="0 0 0.5" rpy="0 0 0" />
+    </xacro:VLP-16>
 	<!--車輪の位置-->
 	<xacro:wheel_macro prefix="rearwheel_right" parent="base_floor" xyz="-0.3 -0.245 0" rpy="1.57 0 0" axis="0 0 -1" radius="0.1325" length="0.05" mu1="1.0" mu2="1.0"/>
 	<xacro:wheel_macro prefix="rearwheel_left"  parent="base_floor" xyz="-0.3 0.245 0" rpy="-1.57 0 0" axis="0 0 1" radius="0.1325" length="0.05" mu1="1.0" mu2="1.0"/>
