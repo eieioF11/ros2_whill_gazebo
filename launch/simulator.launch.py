@@ -21,7 +21,7 @@ def generate_launch_description():
             PythonLaunchDescriptionSource(
                 os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzserver.launch.py')
             ),
-            # launch_arguments={'world': world_path}.items(),
+            launch_arguments={'world': world_path}.items(),
         ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
@@ -40,8 +40,8 @@ def generate_launch_description():
             namespace=robot_ns,
             arguments=['-topic', 'robot_description',
                 '-entity', 'whill'
-                , "-x", "0.0", "-y", "0.0", "-z", "0.0"
-                , "-R", "0.0", "-P", "0.0", "-Y", "0.0"
+                , "-x", "1.0", "-y", "-0.5", "-z", "0.0"
+                , "-R", "0.0", "-P", "0.0", "-Y", "-1.5708"
                 ],
             output='screen'
         ),
